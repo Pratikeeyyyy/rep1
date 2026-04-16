@@ -20,7 +20,8 @@ const TotalLikes = (props) => {
   return (
     <>
       <div
-        className={` ${theme === "dark" ? "bg-black" : "bg-pink-100"} inline-flex items-center gap-2 px-3 py-1 rounded-full  font-medium text-sm`}
+        className={`${theme === "dark" ? "bg-black" : "bg-pink-100"} 
+ inline-flex items-center gap-2 px-3 py-1 rounded-full  dark:bg-gray-950 font-medium text-sm`}
       >
         <span className="text-lg">❤️</span>
         <span

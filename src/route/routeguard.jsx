@@ -1,33 +1,23 @@
 import { useContext } from "react";
-import { Navigate } from "react-router";
-import { authcontext } from "../Context/authcontext";
-
-function userLoggedin() {
-  const { user, setUser, isAuthenticated } = useContext(authcontext);
-  //answers true or false
-  if (isAuthenticated === true) {
-    return true;
-  } else {
-    return false;
-  }
-}
+import { Navigate } from "react-router-dom";
+import { authcontext } from "../Context/authContext";
 
 export const ProtectedRoute = ({ children }) => {
-  const isAuthenticated = useContext(authcontext);
-  console.log("bool", isAuthenticated);
-  if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
-  }
-  return children;
+  const { isAuthenticated } = useContext(authcontext);
+
+  if (isAuthenticated === undefined) return null; // or loading spinner
+
+  return isAuthenticated ? children : <Navigate to="/login" replace />;
 };
 
 export const PublicRoute = ({ children }) => {
-  return children;
+  const { isAuthenticated } = useContext(authcontext);
+
+  return isAuthenticated ? <Navigate to="/" replace /> : children;
 };
 
 export const SemiprotectedRoute = ({ children }) => {
-  if (userLoggedin()) {
-    return <Navigate to="/" replace />;
-  }
-  return children;
+  const { isAuthenticated } = useContext(authcontext);
+
+  return isAuthenticated ? <Navigate to="/" replace /> : children;
 };

@@ -1,52 +1,49 @@
-import { Link } from "react-router";
-import { useEffect } from "react";
-import authentication from "../const.js";
-import Header from "./header.jsx";
-import { useNavigate, Navigate } from "react-router";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import apiClient from "../api.js";
+import { useContext } from "react";
+import { authcontext } from "../Context/authContext";
 function Login() {
   const navigate = useNavigate();
-  // const [userinput, setUserinput] = usestate([]);
-  function submit(idandpass) {
-    idandpass.preventDefault();
-    console.log(idandpass);
-    let email = idandpass.target.username.value;
-    console.log(email);
-    let password = idandpass.target.password.value;
-    console.log(password);
+  const { userstatus } = useContext(authcontext);
+
+  function submit(e) {
+    e.preventDefault();
+
+    let email = e.target.username.value;
+    let password = e.target.password.value;
+
     gettingvalueoflogin(email, password);
   }
-  function gettingvalueoflogin(email, password) {
-    apiClient
-      .post("/auth/login", {
-        email: email,
-        password: password,
-      })
-      .then((response) => {
-        console.log(response);
-        const logintoken = localStorage.setItem(
-          "token",
-          response.data.data.token,
-        );
-        console.log(logintoken);
-        console.log(response.data.success);
-        if (response.data.success === true) {
-          console.log("login success:", response.data.success);
-          navigate("/");
-        }
-      })
-      .catch((error) => {
-        console.error("error", error.response);
+
+  async function gettingvalueoflogin(email, password) {
+    try {
+      const response = await apiClient.post("/auth/login", {
+        email,
+        password,
       });
+
+      console.log(response);
+
+      // store token
+      localStorage.setItem("token", response.data.data.token);
+
+      if (response.data.success === true) {
+        localStorage.setItem("token", response.data.data.token);
+
+        await userstatus();
+
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("error", error.response);
+    }
   }
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col">
-      {/* Header */}
       <div className="flex justify-center items-center flex-1 px-4">
         <div className="flex flex-col md:flex-row items-center md:items-start justify-between w-full max-w-5xl">
-          {/* Left Section */}
+          {/* Left */}
           <div className="mb-10 md:mb-0 md:mt-16 max-w-md text-center md:text-left">
             <h1 className="text-blue-600 text-5xl font-bold mb-4">facebook</h1>
             <p className="text-xl text-gray-700">
@@ -54,59 +51,46 @@ function Login() {
             </p>
           </div>
 
-          {/* Right Section (Login Card) */}
+          {/* Right */}
           <div className="bg-white p-6 rounded-2xl shadow-lg w-full max-w-sm">
             <form className="flex flex-col gap-3" onSubmit={submit}>
               <input
                 type="text"
                 name="username"
                 placeholder="Email address or phone number"
-                className="border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border px-4 py-3 rounded-md"
               />
+
               <input
                 type="password"
                 name="password"
                 placeholder="Password"
-                className="border border-gray-300 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 "
+                className="border px-4 py-3 rounded-md"
               />
+
               <button
                 type="submit"
-                className="bg-blue-600 text-white py-3 rounded-md font-semibold text-lg hover:bg-blue-700"
+                className="bg-blue-600 text-white py-3 rounded-md font-semibold"
               >
-                submit
+                Login
               </button>
             </form>
-            {/* <Link to="/register">*/}
-            <a
-              href="#"
-              className="text-blue-600 text-sm text-center hover:underline"
-            >
-              Forgotten password?
-            </a>
-            {/* </Link> */}
-            <hr className="my-2" />
+
+            <hr className="my-3" />
+
             <div className="flex justify-center">
-              <button
-                type="button"
-                className="bg-green-500 text-white px-4 py-3 rounded-md font-semibold hover:bg-green-600"
+              <Link
+                to="/register"
+                className="bg-green-500 text-white px-4 py-2 rounded-md"
               >
-                <Link to="/register" className="hover:underline">
-                  Create new account
-                </Link>
-              </button>
+                Create new account
+              </Link>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Footer */}
-      <div className="text-center text-sm text-gray-500 pb-6">
-        <p>
-          <span className="font-semibold">Create a Page</span> for a celebrity,
-          brand or business.
-        </p>
-      </div>
     </div>
   );
 }
+
 export default Login;

@@ -19,7 +19,7 @@ function Register() {
     // alert("Registration successful!");
     // alert("Please Login now with the registered data");
   };
-  function gettingvalue(username, email, fullname, password) {
+function gettingvalue(username, email, fullname, password) {
     apiClient
       .post("/auth/signup", {
         username: username,
@@ -48,7 +48,7 @@ function Register() {
       <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold text-center mb-6 text-gray-800">
           Register
-        </h2>
+        </h2>  
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="username" className="block text-gray-600 mb-1">

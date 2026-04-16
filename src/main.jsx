@@ -14,35 +14,37 @@ import { SemiprotectedRoute } from "./route/routeguard.jsx";
 import { ProtectedRoute } from "./route/routeguard.jsx";
 import Logout from "./component/logout.jsx";
 import Post from "./component/post.jsx";
-import { AuthProvider } from "./Context/authcontext.jsx";
-
+import Footer from "./component/footer.jsx";
+import { AuthProvider } from "./Context/authContext.jsx";
+import ThemeProvider from "./Context/themeContext.jsx";
 createRoot(document.getElementById("root")).render(
   <>
     <StrictMode>
       <AuthProvider>
-        {/* {newposts.map((newpost) => {
+        <ThemeProvider>
+          {/* {newposts.map((newpost) => {
       return <Post />;
       })} */}
-        <BrowserRouter>
-          <Header />
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
+          <BrowserRouter>
+            <Header />
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  // <ProtectedRoute>
                   <App />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/logout"
-              element={
-                <PublicRoute>
-                  <Logout />
-                </PublicRoute>
-              }
-            />
-            {/* <Route
+                  // </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/logout"
+                element={
+                  <PublicRoute>
+                    <Logout />
+                  </PublicRoute>
+                }
+              />
+              {/* <Route
             path="/post"
             element={
               <ProtectedRoute>
@@ -50,41 +52,43 @@ createRoot(document.getElementById("root")).render(
               </ProtectedRoute>
             }
           /> */}
-            <Route
-              path="/aboutus"
-              element={
-                <PublicRoute>
-                  <AboutUs />
-                </PublicRoute>
-              }
-            />
-            <Route
-              path="/login"
-              element={
-                <SemiprotectedRoute>
-                  <Login />
-                </SemiprotectedRoute>
-              }
-            />
-            <Route
-              path="/register"
-              element={
-                <SemiprotectedRoute>
-                  <Register />
-                </SemiprotectedRoute>
-              }
-            />
+              <Route
+                path="/aboutus"
+                element={
+                  <PublicRoute>
+                    <AboutUs />
+                  </PublicRoute>
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <SemiprotectedRoute>
+                    <Login />
+                  </SemiprotectedRoute>
+                }
+              />
+              <Route
+                path="/register"
+                element={
+                  <SemiprotectedRoute>
+                    <Register />
+                  </SemiprotectedRoute>
+                }
+              />
 
-            <Route
-              path="/facebookprofileui/:idforall"
-              element={
-                <ProtectedRoute>
-                  <FacebookProfileUI />
-                </ProtectedRoute>
-              }
-            />
-          </Routes>
-        </BrowserRouter>
+              <Route
+                path="/facebookprofileui/:idforall"
+                element={
+                  <ProtectedRoute>
+                    <FacebookProfileUI />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+            <Footer />
+          </BrowserRouter>
+        </ThemeProvider>
       </AuthProvider>
     </StrictMode>
   </>,

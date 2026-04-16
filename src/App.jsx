@@ -6,6 +6,7 @@ import axios from "axios";
 import ThemeProvider from "./Context/themeContext.jsx";
 import Header from "./component/header.jsx";
 import apiClient from "./api.js";
+import Footer from "./component/footer.jsx";
 export default function App() {
   const [togglethetheme, setToggletheme] = useState("dark");
   const [totallikes, settotallikes] = useState(0);
@@ -13,7 +14,7 @@ export default function App() {
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     const token1 = localStorage.getItem("token");
-    console.log(token1);
+    // console.log(token1);
 
     apiClient
       .get("/posts?page=1&limit=8", {
