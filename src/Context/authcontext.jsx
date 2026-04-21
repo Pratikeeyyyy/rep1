@@ -1,7 +1,49 @@
+// import { createContext, useEffect, useState } from "react";
+// import apiClient from "../api";
+
+// export const AuthContext = createContext();
+
+// export const AuthProvider = ({ children }) => {
+//   const [user, setUser] = useState(null);
+
+//   useEffect(() => {
+//     userstatus();
+//   }, []);
+
+//   async function userstatus() {
+//     const token = localStorage.getItem("token");
+
+//     if (!token) {
+//       setUser(null);
+//       return;
+//     }
+
+//     try {
+//       const response = await apiClient.get("/auth/me", {
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+
+//       setUser(response.data.data.user);
+//     } catch (error) {
+//       setUser(null);
+//     }
+//   }
+
+//   const value = {
+//     user,
+//     setUser,
+//     userstatus,
+//     isAuthenticated: !!user,
+//   };
+
+//   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+// };
 import { createContext, useEffect, useState } from "react";
 import apiClient from "../api";
 
-export const authcontext = createContext();
+export const AuthContext = createContext(); // ✅ FIXED NAME
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -25,21 +67,15 @@ export const AuthProvider = ({ children }) => {
         },
       });
 
-      console.log("response from /me endpoint", response);
-
       setUser(response.data.data.user);
     } catch (error) {
-      console.log("token invalid or expired");
       setUser(null);
     }
   }
 
-  const value = {
-    user,
-    setUser,
-    userstatus,
-    isAuthenticated: !!user,
-  };
-
-  return <authcontext.Provider value={value}>{children}</authcontext.Provider>;
+  return (
+    <AuthContext.Provider value={{ user, setUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
